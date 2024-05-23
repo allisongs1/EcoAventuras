@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO-AVENTURAS</title>
+  <!-- Enlaza los estilos de Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1e7430; /* Verde oscuro */
+      color: #ffffff; /* Texto blanco */
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .start-screen, .quiz-container {
+      display: none;
+    }
+
+    .start-screen.active, .quiz-container.active {
+      display: block;
+    }
+
+    .start-screen {
+      position: relative;
+      text-align: center;
+    }
+
+    .start-screen img.bg {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+    }
+
+    .start-screen button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffc107;
+      border: none;
+      border-radius: 70px;
+      font-size: 28px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .start-screen button:hover {
+      background-color: #ff9800;
+    }
+
+    .person-cycling, .person-walking {
+      position: absolute;
+      animation: move 10s linear infinite;
+    }
+
+    .person-cycling {
+      width: 10%; /* Ajustar el tamaño según sea necesario */
+      left: 0;
+      bottom: 10%;
+      animation-name: cycling;
+    }
+
+    .person-walking {
+      width: 10%; /* Ajustar el tamaño según sea necesario */
+      right: 0;
+      top: 35%;
+      transform: translateY(-50%);
+      animation-name: walking;
+    }
+
+    @keyframes cycling {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(100vw); }
+    }
+
+    @keyframes walking {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100vw); }
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco transparente */
+      border-radius: 30px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+		
+    }
+
+    .btn-primary {
+      background-color: #ffc107; /* Amarillo */
+      border-color: #ffc107;
+      border-radius: 50px;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+
+    .btn-primary:hover {
+      background-color: #ff9800; /* Naranja */
+      border-color: #ff9800;
+    }
+
+    .img-option {
+      height: 400px; /* Altura fija para mantener la relación de aspecto */
+      object-fit: cover; /* Cubrir toda la tarjeta */
+      border-radius: 20px 20px 0 0; /* Esquinas redondeadas solo arriba */
+      cursor: pointer; /* Cursor de clic */
+      transition: transform 0.2s;
+    }
+
+    .img-option:hover {
+      transform: scale(1.05);
+    }
+
+    .quiz-title {
+      font-size: 40px;
+      text-align: center;
+      color: #ffc107; /* Amarillo */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
+      margin-bottom: 20px;
+    }
+
+    .card-text {
+      color: #000000; /* Texto negro */
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .selected {
+      border: 4px solid #ffc107; /* Borde amarillo para indicar selección */
+    }
+  </style>
+</head>
+<body>
+
+<audio autoplay loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Tu navegador no soporta la reproducción de audio.
+    </audio>
+	
+	
+<div class="start-screen active">
+  <img src="images/start-screen.jpg" alt="ECO-AVENTURAS" class="bg">
+  <img src="images/person-cycling.png" alt="Persona en bicicleta" class="person-cycling">
+  <img src="images/person-walking.png" alt="Persona caminando" class="person-walking">
+  <button onclick="startQuiz()">Jugar</button>
+</div>
+
+<div class="container quiz-container">
+  <h1 class="quiz-title">ECO-AVENTURAS</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title card-text">¿Dónde se deposita la basura?</h5>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body p-0">
+              <img src="images/1-05.jpg" alt="Imagen 1" class="img-option w-100" onclick="selectImage(this)">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body p-0">
+              <img src="images/1-06.jpg" alt="Imagen 2" class="img-option w-100" onclick="selectImage(this)">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body p-0">
+              <img src="images/1-07.jpg" alt="Imagen 3" class="img-option w-100" onclick="selectImage(this)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary mt-4" onclick="enviarRespuesta()">Enviar respuesta</button>
+</div>
+
+<!-- Incluye el script de Bootstrap y jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    let selectedImage = null;
+    let preguntas = [
+      {
+        pregunta: "¿Dónde se deposita la basura?",
+        imagenes: ["images/3.jpg", "images/bote.jpg", "images/h2.jpg"]
+      },
+      {
+        pregunta: "¿Qué imagen muestra a alguien cuidando las plantas?",
+        imagenes: ["images/1-10.jpg", "images/1-12.jpg", "images/1-11.jpg"]
+      },
+      {
+        pregunta: "¿Cuál de estas imágenes muestra un lugar limpio y cuidado?",
+        imagenes: ["images/1-15.jpg", "images/1-13.jpg", "images/1-09.jpg"]
+      },
+      {
+        pregunta: "¿Cuál de estas imágenes representa el uso de transporte ecológico?",
+        imagenes: ["images/1-14.jpg", "images/1-08.jpg", "images/1-04.jpg"]
+      },
+      {
+        pregunta: "¿Qué imagen muestra una acción que contamina el aire?",
+        imagenes: ["images/1-04.jpg", "images/1-09.jpg", "images/1-06.jpg"]
+      }
+    ];
+    let preguntaActual = 0;
+
+    function startQuiz() {
+      document.querySelector('.start-screen').classList.remove('active');
+      document.querySelector('.quiz-container').classList.add('active');
+    }
+
+    function selectImage(element) {
+      if (selectedImage !== null) {
+        selectedImage.classList.remove('selected');
+      }
+      selectedImage = element;
+      selectedImage.classList.add('selected');
+    }
+
+    function mostrarSiguientePregunta() {
+      preguntaActual++;
+      if (preguntaActual < preguntas.length) {
+        document.querySelector('.card-title').textContent = preguntas[preguntaActual].pregunta;
+        let imagenesHTML = '';
+        preguntas[preguntaActual].imagenes.forEach((imagen, index) => {
+          imagenesHTML += `
+            <div class="col-md-4">
+              <div class="card mb-3">
+                <div class="card-body p-0">
+                  <img src="${imagen}" alt="Imagen ${index + 1}" class="img-option w-100" onclick="selectImage(this)">
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        document.querySelector('.row').innerHTML = imagenesHTML;
+        if (selectedImage !== null) {
+          selectedImage.classList.remove('selected');
+          selectedImage = null;
+        }
+      } else {
+        document.querySelector('.card-title').textContent = "¡Fin del cuestionario!";
+        document.querySelector('.row').innerHTML = '<p class="card-text">Gracias por participar. Hagamos de nuestro planeta un lugar mejor.</p>';
+        document.querySelector('.btn-primary').style.display = 'none';
+      }
+    }
+
+    function enviarRespuesta() {
+      if (selectedImage !== null) {
+        alert('Respuesta enviada: ' + selectedImage.alt);
+        mostrarSiguientePregunta();
+      } else {
+        alert('Por favor selecciona una imagen antes de enviar tu respuesta.');
+      }
+    }
+  </script>
+</body>
+</html>
